@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Danik — Лунный портал</title>
+<style>
+*{box-sizing:border-box}
+:root{color-scheme:dark}
+body{margin:0;min-height:100svh;overflow:hidden;background:#060711;color:#f3f1ff;font-family:Georgia,serif}
+.sky{position:fixed;inset:0;background:radial-gradient(circle at 50% 42%,#202b47 0%,#0b1021 42%,#04050b 90%)}
+.stars{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 10% 20%,white 80%,transparent),radial-gradient(2px 2px at 72% 12%,white 80%,transparent),radial-gradient(2px 2px at 87% 74%,white 80%,transparent),radial-gradient(2px 2px at 22% 82%,white 80%,transparent),radial-gradient(1px 1px at 40% 65%,white 80%,transparent),radial-gradient(1px 1px at 63% 49%,white 80%,transparent);animation:twinkle 3s infinite alternate}
+@keyframes twinkle{to{opacity:.25}}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity 1s ease,transform 1.7s cubic-bezier(.2,.7,.1,1)}
+.scene.exit{opacity:0;transform:scale(1.12);pointer-events:none}
+.moon{font-size:100px;line-height:1.1;filter:drop-shadow(0 0 30px #b2c9ff90);animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px)}}
+h1{font-weight:normal;letter-spacing:2px;font-size:clamp(27px,7vw,42px);margin:16px 0 10px}
+p{line-height:1.6;color:#b3bad1;margin:0 0 26px}
+button{font:inherit;cursor:pointer}
+.portal{border:1px solid #a8b4da;background:linear-gradient(120deg,#292e49,#13192c,#323753);color:white;border-radius:50px;padding:17px 30px;letter-spacing:1px;box-shadow:0 0 35px #a2b8ff50;animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 55px #b4c8ff9a;transform:scale(1.04)}}
+.transition{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:5;opacity:0}
+.transition.active{opacity:1}
+.orb{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d7e6ff 45%,#8b9fc8 75%,#53658b);box-shadow:0 0 45px 12px #bed2ffb3;transform:scale(.1);opacity:0}
+.transition.active .orb{animation:orb-expand 2.8s cubic-bezier(.25,.1,.2,1) forwards}
+@keyframes orb-expand{0%{transform:scale(.1);opacity:0}15%{opacity:1}45%{transform:scale(1.6);opacity:1}75%{transform:scale(4);opacity:1}100%{transform:scale(45);opacity:1}}
+.transition .message{position:absolute;color:#111a30;letter-spacing:3px;font-size:clamp(18px,5vw,30px);opacity:0}
+.transition.active .message{animation:message-in 2.1s .7s both}
+@keyframes message-in{40%{opacity:0}100%{opacity:1}}
+.reveal{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;opacity:0;transform:scale(.8);pointer-events:none;transition:opacity 1.5s ease,transform 1.8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:scale(1);pointer-events:auto}
+.reveal h2{font-size:clamp(25px,7vw,38px);font-weight:normal;margin:0 0 8px}
+.qr{padding:15px;background:white;border-radius:20px;box-shadow:0 0 60px #a7bdff88;margin:20px 0}
+.qr img{display:block;width:min(61vw,230px);height:auto}
+.link{display:inline-block;text-decoration:none;color:#10182a;background:#dfe9ff;border-radius:40px;padding:14px 25px;font-weight:bold}
+.back{background:transparent;color:#b6c5eb;border:0;margin-top:24px;padding:10px}
+.caption{color:#b0b7d0;margin-top:8px}
+@media(prefers-reduced-motion:reduce){.stars,.moon,.portal{animation:none}.transition.active .orb{animation-duration:.3s}.transition.active .message{animation:none}.scene,.reveal{transition-duration:.2s}}
+</style>
+</head>
+<body>
+<div class="sky"></div><div class="stars"></div>
+<section class="scene" id="scene">
+  <div class="moon">☾</div>
+  <h1>𓆩 Danik's World 𓆪</h1>
+  <p>Маленький портал в мой мир 🖤<br>Нажми на кнопку и дождись лунного превращения</p>
+  <button class="portal" id="open">✦ Открыть портал ✦</button>
+</section>
+<div class="transition" id="transition" aria-hidden="true"><div class="orb"></div><div class="message">✦ ПОРТАЛ ОТКРЫВАЕТСЯ ✦</div></div>
+<section class="reveal" id="reveal" aria-hidden="true">
+  <h2>𓆩 🖤 Добро пожаловать 🖤 𓆪</h2>
+  <div class="caption">Отсканируй QR-код и загляни в мой мир</div>
+  <div class="qr"><img src="data:image/png;base64,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" alt="QR-код Telegram-канала"></div>
+  <a class="link" href="https://t.me/Danik_me17g2" target="_blank" rel="noopener">🥀 Перейти в Telegram ↗</a>
+  <button class="back" id="back">↶ Вернуться назад</button>
+</section>
+<script>
+const scene=document.getElementById('scene'),transition=document.getElementById('transition'),reveal=document.getElementById('reveal'),open=document.getElementById('open'),back=document.getElementById('back');
+let busy=false;
+open.addEventListener('click',()=>{
+ if(busy)return;busy=true;open.disabled=true;
+ transition.classList.remove('active');void transition.offsetWidth;
+ transition.classList.add('active');
+ setTimeout(()=>scene.classList.add('exit'),700);
+ setTimeout(()=>{
+  reveal.classList.add('visible');reveal.setAttribute('aria-hidden','false');
+  transition.classList.remove('active');busy=false;open.disabled=false;
+ },2850);
+});
+back.addEventListener('click',()=>{
+ reveal.classList.remove('visible');reveal.setAttribute('aria-hidden','true');
+ scene.classList.remove('exit');
+});
+</script>
+</body>
+</html>
